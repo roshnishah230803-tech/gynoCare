@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: gynocare-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gynocare-backend
+    env_file: .env.development
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/gynocare
+      - ML_SERVICE_URL=http://ml:${ML_PORT:-8000}
+      - BACKEND_PORT=${BACKEND_PORT:-5000}
+      - NODE_ENV=development
+    depends_on:
+      mongo:
+        condition: service_healthy
+      ml:
+        condition: service_healthy
+    ports:
+      - "${BACKEND_PORT:-5000}:5000"
+
+  ml:
+    build:
+      context: ./ml
+      dockerfile: Dockerfile
+    container_name: gynocare-ml
+    env_file: .env.development
+    environment:
+      - fastapi_port=${ML_PORT:-8000}
+      - fastapi_host=0.0.0.0
+    ports:
+      - "${ML_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gynocare-frontend
+    env_file: .env.development
+    environment:
+      - BACKEND_URL=http://backend:${BACKEND_PORT:-5000}
+      - NEXT_PUBLIC_API_BASE_URL=http://backend:${BACKEND_PORT:-5000}
+      - PORT=${FRONTEND_PORT:-3000}
+      - NODE_ENV=development
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+
+volumes:
+  mongo_data:
