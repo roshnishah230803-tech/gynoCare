@@ -1,0 +1,17 @@
+Model File Requirements for GynoCare ML Service
+Required Files:
+- pcos_model.joblib (PCOS prediction model)
+- cervical_model.joblib (Cervical cancer prediction model)
+Model Specifications:
+Both models should be trained using scikit-learn and saved with joblib
+Compatible scikit-learn models:
+- LogisticRegression
+- RandomForestClassifier
+- GradientBoostingClassifier
+- SVM (SVC)
+- XGBoost (with sklearn API)
+- Any sklearn-compatible classifier
+Feature counts:
+PCOS: 16 features
+Cervical Cancer: 14 features
+See README.md in this directory for detailed feature specifications
