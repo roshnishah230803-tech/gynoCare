@@ -158,35 +158,36 @@ const PasswordStrength = ({ password }) => {
   );
 };
 
-// Success Message Component
-const SuccessMessage = ({ onRedirect, redirectSeconds }) => (
-  <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-rose-50 flex items-center justify-center p-3 sm:p-4">
-    <div className="relative w-full max-w-sm sm:max-w-md">
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-green-200 p-6 sm:p-8 text-center">
-        <div className="mb-4 sm:mb-6">
-          <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+function SuccessMessage({ onRedirect, redirectSeconds }) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-rose-50 flex items-center justify-center p-3 sm:p-4">
+      <div className="relative w-full max-w-sm sm:max-w-md">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-green-200 p-6 sm:p-8 text-center">
+          <div className="mb-4 sm:mb-6">
+            <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
+              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1 sm:mb-2">Account Created Successfully!</h2>
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Welcome to GynoCare! You can now sign in to your account.</p>
+            
+            <div className="bg-green-50 border border-green-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+              <p className="text-xs sm:text-sm text-green-700">
+                🎉 You&apos;re all set! Redirecting you to the sign-in page in <span className="font-semibold">{redirectSeconds}</span> seconds...
+              </p>
+            </div>
+            
+            <button
+              onClick={onRedirect}
+              className="w-full py-3 sm:py-4 px-4 rounded-xl font-semibold text-white text-sm sm:text-base bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 hover:scale-105 shadow-lg active:scale-95 transition-all duration-300 transform"
+            >
+              Go to Sign In Now
+            </button>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1 sm:mb-2">Account Created Successfully!</h2>
-          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Welcome to GynoCare! You can now sign in to your account.</p>
-          
-          <div className="bg-green-50 border border-green-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
-            <p className="text-xs sm:text-sm text-green-700">
-              🎉 You&apos;re all set! Redirecting you to the sign-in page in <span className="font-semibold">{redirectSeconds}</span> seconds...
-            </p>
-          </div>
-          
-          <button
-            onClick={onRedirect}
-            className="w-full py-3 sm:py-4 px-4 rounded-xl font-semibold text-white text-sm sm:text-base bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 hover:scale-105 shadow-lg active:scale-95 transition-all duration-300 transform"
-          >
-            Go to Sign In Now
-          </button>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+}
 
 export default function App() {
   const router = useRouter();
