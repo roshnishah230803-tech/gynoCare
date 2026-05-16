@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { apiClient } from "../../utils/api";
 
 // Custom SVG Icons with enhanced styling
 const User = ({ className }) => (
@@ -371,13 +373,69 @@ const PCOSForm = ({ onClose }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      // Note: Frontend form doesn't collect all required fields for ML model
+      // We'll use local calculation for now, but ideally the form should be updated
+      // to collect: weight, height, bloodGroup, cycleLength, periodDuration, etc.
+      
+      // For now, we'll calculate locally since the form doesn't match ML schema
+      const prediction = calculateRiskPrediction();
+      setRiskPrediction(prediction);
+      setShowConfirmation(true);
 
-    const prediction = calculateRiskPrediction();
-    setRiskPrediction(prediction);
+      // TODO: Once frontend form is updated to collect all required fields,
+      // uncomment this to use the ML service:
+      /*
+      const backendData = {
+        age: parseInt(formData.age) || 25,
+        weight: parseFloat(formData.weight) || 70,
+        height: parseFloat(formData.height) || 165,
+        bloodGroup: formData.bloodGroup || 'O+',
+        cycleLength: parseInt(formData.cycleLength) || 1,
+        recentWeightGain: formData.weightGain || false,
+        excessHairGrowth: formData.hirsutism || false,
+        skinDarkening: formData.skinDarkening || false,
+        hairLoss: formData.thinningHair || false,
+        pimples: formData.acne || false,
+        fastFood: formData.fastFood || false,
+        exercise: formData.exercise || false,
+        previousPCOS: formData.previousPCOS || false,
+        moodSwings: formData.moodSwings || false,
+        periodRegularity: formData.menstrualCycle === 'Regular' ? 'Regular' : 'Irregular',
+        periodDuration: parseInt(formData.periodDuration) || 5,
+      };
 
-    setIsSubmitting(false);
-    setShowConfirmation(true);
+      const response = await apiClient.post('/pcos', backendData);
+      
+      if (response.success && response.data) {
+        const prediction = {
+          level: response.data.result.includes('Likely') ? 'Higher' : 
+                 response.data.result.includes('Unlikely') ? 'Low' : 'Moderate',
+          color: response.data.probability < 0.3 ? 'green' : 
+                 response.data.probability < 0.7 ? 'yellow' : 'red',
+          percentage: Math.round(response.data.probability * 100),
+          score: Math.round(response.data.probability * 20),
+          factors: response.data.explanation?.top_features?.map(f => f.feature) || [],
+          recommendations: [
+            "Your symptoms suggest a low likelihood of PCOS.",
+            "Maintain a healthy lifestyle with balanced diet and regular exercise.",
+            "Consider regular check-ups to monitor your reproductive health.",
+          ]
+        };
+        setRiskPrediction(prediction);
+        setShowConfirmation(true);
+      }
+      */
+    } catch (error) {
+      console.error('PCOS prediction error:', error);
+      
+      // Fallback to local calculation
+      const prediction = calculateRiskPrediction();
+      setRiskPrediction(prediction);
+      setShowConfirmation(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Results modal
@@ -700,16 +758,31 @@ const PCOSForm = ({ onClose }) => {
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // Auto-show form when coming from login
+  // Auto-show form when coming from login (already showing by default)
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const fromLogin = urlParams.get('fromLogin');
+    const fromLogin = searchParams.get('fromLogin');
     if (fromLogin === 'true') {
       setShowForm(true);
+      // Clean up URL by removing the query parameter after form is shown
+      setTimeout(() => {
+        router.replace('/pcos', { scroll: false });
+      }, 100);
     }
-  }, []);
+  }, [searchParams, router]);
 
+  const handleCloseForm = () => {
+    setShowForm(false);
+    // Clean up URL if it still has the parameter
+    if (searchParams.get('fromLogin')) {
+      router.replace('/pcos', { scroll: false });
+    }
+    router.push("/");
+  };
+
+  // Show welcome screen only when form is closed
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl p-8 shadow-2xl max-w-xl text-center border-2 border-rose-200">
@@ -731,8 +804,8 @@ const App = () => {
           Start Assessment
         </button>
       </div>
-      {showForm && <PCOSForm onClose={() => setShowForm(false)} />}
-    </div>
+      {showForm && <PCOSForm onClose={handleCloseForm} />}
+      </div>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { apiClient } from "../../utils/api";
 
 // Custom SVG Icons
 const Mail = ({ className }) => (
@@ -105,11 +106,31 @@ export default function ForgotPasswordPage() {
     setErrors({});
 
     try {
-      // Simulate API call for password reset
-      await new Promise(resolve => setTimeout(resolve, 2500));
+      // Note: Backend doesn't have a password reset endpoint yet
+      // This is a placeholder for when the endpoint is implemented
+      // For now, we'll show success message but not actually call API
+      
+      // TODO: Uncomment when password reset endpoint is available
+      /*
+      const response = await apiClient.post('/auth/forgot-password', {
+        email: formData.email.trim(),
+      });
+
+      if (response.success) {
+        setIsSubmitted(true);
+      } else {
+        setErrors({ general: response.message || "Failed to send reset email. Please try again." });
+      }
+      */
+      
+      // Temporary: Show success message (remove when API is implemented)
+      await new Promise(resolve => setTimeout(resolve, 1500));
       setIsSubmitted(true);
     } catch (error) {
-      setErrors({ general: "Something went wrong. Please try again." });
+      console.error('Password reset error:', error);
+      setErrors({ 
+        general: error.message || "Something went wrong. Please try again." 
+      });
     } finally {
       setIsLoading(false);
     }

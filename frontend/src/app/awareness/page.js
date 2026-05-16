@@ -203,7 +203,6 @@ export default function App() {
 
   const stats = [
     {
-      number: "10M+",
       label: "Women Empowered",
       icon: "👩",
       description: "Taking control of their health journey"
@@ -263,8 +262,8 @@ export default function App() {
               <a href="/awareness" className="px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-rose-100 hover:text-rose-700 transition-all duration-300">
                 Awareness
               </a>
-              <ActionButton href="/login" variant="secondary">
-                Sign In
+              <ActionButton href="/signup" variant="secondary">
+                Sign Up
               </ActionButton>
             </div>
 
@@ -316,21 +315,67 @@ export default function App() {
           </div>
           
           {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-12 opacity-70">
-            <div className="text-center">
-              <div className="text-2xl lg:text-3xl font-bold text-rose-600">HIPAA</div>
-              <div className="text-sm lg:text-base text-gray-600">Compliant</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl lg:text-3xl font-bold text-rose-600">256-bit</div>
-              <div className="text-sm lg:text-base text-gray-600">Encryption</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl lg:text-3xl font-bold text-rose-600">10M+</div>
-              <div className="text-sm lg:text-base text-gray-600">Users Trust Us</div>
-            </div>
-          </div>
-        </section>
+          <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-12 opacity-90">
+  {/* Confidential */}
+  <div className="text-center">
+    <div className="flex flex-col items-center gap-2">
+      {/* Lock Icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-10 w-10 text-pink-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.105 0 2-.895 2-2V7a2 2 0 10-4 0v2c0 1.105.895 2 2 2z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 11v10h12V11H6z" />
+      </svg>
+      <div className="text-2xl lg:text-3xl font-bold text-pink-600">Confidential</div>
+      <div className="text-sm lg:text-base text-gray-600">All health data is private and secure</div>
+    </div>
+  </div>
+
+  {/* Trusted */}
+  <div className="text-center">
+    <div className="flex flex-col items-center gap-2">
+      {/* Users Icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-10 w-10 text-pink-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a4 4 0 00-4-4h-1" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20H4v-2a4 4 0 014-4h1" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12a4 4 0 100-8 4 4 0 000 8z" />
+      </svg>
+      <div className="text-2xl lg:text-3xl font-bold text-pink-600">Trusted</div>
+      <div className="text-sm lg:text-base text-gray-600">Millions of women rely on our platform</div>
+    </div>
+  </div>
+
+  {/* Evidence-Based */}
+  <div className="text-center">
+    <div className="flex flex-col items-center gap-2">
+      {/* Document / Research Icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-10 w-10 text-pink-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z" />
+      </svg>
+      <div className="text-2xl lg:text-3xl font-bold text-pink-600">Evidence-Based</div>
+      <div className="text-sm lg:text-base text-gray-600">Guidance backed by medical research</div>
+    </div>
+  </div>
+</div>
+
+
+</section>
 
         {/* Statistics Section */}
         <section className="py-16 lg:py-20">

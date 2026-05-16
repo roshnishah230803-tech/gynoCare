@@ -9,6 +9,30 @@ const { predictCervicalCancer } = require('../utils/mlClient');
 const logger = require('../utils/logger');
 
 /**
+ * Transform camelCase to snake_case for ML service
+ * @param {Object} data - Data in camelCase
+ * @returns {Object} Data in snake_case
+ */
+function transformToSnakeCase(data) {
+  return {
+    age: data.age,
+    num_sexual_partners: data.numSexualPartners,
+    age_first_intercourse: data.ageFirstIntercourse,
+    num_pregnancies: data.numPregnancies,
+    smoking: data.smoking,
+    years_smoking: data.yearsSmoking || 0,
+    hormonal_contraceptives: data.hormonalContraceptives,
+    years_hormonal_contraceptives: data.yearsHormonalContraceptives || 0,
+    iud: data.iud,
+    years_iud: data.yearsIud || 0,
+    stds: data.stds,
+    num_stds: data.numStds || 0,
+    std_hpv: data.stdHpv,
+    std_hiv: data.stdHiv
+  };
+}
+
+/**
  * Submit cervical cancer data and get ML prediction
  * POST /api/cervical-cancer
  */
@@ -16,8 +40,11 @@ exports.predictCervicalCancer = async (req, res) => {
   try {
     const cervicalData = req.body;
     
+    // Transform camelCase to snake_case for ML service
+    const mlData = transformToSnakeCase(cervicalData);
+    
     // Call ML service
-    const prediction = await predictCervicalCancer(cervicalData);
+    const prediction = await predictCervicalCancer(mlData);
     
     // Store result in database
     const cervicalRecord = new CervicalCancer({

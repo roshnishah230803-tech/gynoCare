@@ -50,9 +50,6 @@ export default function CervicalCancerPage() {
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-12 px-4 sm:px-0">
             Cervical cancer is a preventable disease. Knowledge, regular screening, and vaccination are your best defenses.
           </p>
-          <ActionButton href="/signup">
-            Explore Screening Options
-          </ActionButton>
         </section>
         
         {/* What is Cervical Cancer? Section */}
@@ -193,8 +190,8 @@ export default function CervicalCancerPage() {
               Your health is in your hands. Talk to your doctor about your screening schedule and the HPV vaccine.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <ActionButton href="/find-a-doctor">
-                Find a Healthcare Provider
+              <ActionButton href="/" variant="secondary">
+                Start your journey
               </ActionButton>
             </div>
           </div>

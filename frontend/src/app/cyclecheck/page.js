@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Custom SVG Icons
 const Calendar = ({ className }) => (
@@ -864,6 +865,12 @@ const CycleTracker = ({ onClose }) => {
 
 const App = () => {
   const [showTracker, setShowTracker] = useState(false);
+  const router = useRouter();
+
+  const handleCloseTracker = () => {
+    setShowTracker(false);
+    router.push("/");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -886,7 +893,7 @@ const App = () => {
           Start Tracking
         </button>
       </div>
-      {showTracker && <CycleTracker onClose={() => setShowTracker(false)} />}
+      {showTracker && <CycleTracker onClose={handleCloseTracker} />}
     </div>
   );
 };

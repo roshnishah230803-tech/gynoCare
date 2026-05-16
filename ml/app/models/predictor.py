@@ -147,11 +147,11 @@ class PCOSPredictor:
 class CervicalCancerPredictor:
     """Cervical cancer prediction handler"""
 
-    # Feature order for cervical cancer model
+    # Feature order for cervical cancer model (using snake_case to match schema)
     FEATURE_ORDER = [
-        'age', 'numSexualPartners', 'ageFirstIntercourse', 'numPregnancies',
-        'smoking', 'yearsSmoking', 'hormonalContraceptives', 'yearsHormonalContraceptives',
-        'iud', 'yearsIud', 'stds', 'numStds', 'stdHpv', 'stdHiv'
+        'age', 'num_sexual_partners', 'age_first_intercourse', 'num_pregnancies',
+        'smoking', 'years_smoking', 'hormonal_contraceptives', 'years_hormonal_contraceptives',
+        'iud', 'years_iud', 'stds', 'num_stds', 'std_hpv', 'std_hiv'
     ]
 
     @staticmethod
@@ -160,28 +160,28 @@ class CervicalCancerPredictor:
         Preprocess input data for cervical cancer model
 
         Args:
-            data: Input dictionary from API request
+            data: Input dictionary from API request (in snake_case to match schema)
 
         Returns:
             Numpy array ready for model prediction
         """
         try:
-            # Create feature array in the correct order
+            # Create feature array in the correct order (using snake_case field names)
             features = np.array([[
                 data['age'],
-                data['numSexualPartners'],
-                data['ageFirstIntercourse'],
-                data['numPregnancies'],
+                data['num_sexual_partners'],
+                data['age_first_intercourse'],
+                data['num_pregnancies'],
                 int(data['smoking']),
-                data['yearsSmoking'],
-                int(data['hormonalContraceptives']),
-                data['yearsHormonalContraceptives'],
+                data['years_smoking'],
+                int(data['hormonal_contraceptives']),
+                data['years_hormonal_contraceptives'],
                 int(data['iud']),
-                data['yearsIud'],
+                data['years_iud'],
                 int(data['stds']),
-                data['numStds'],
-                int(data['stdHpv']),
-                int(data['stdHiv'])
+                data['num_stds'],
+                int(data['std_hpv']),
+                int(data['std_hiv'])
             ]], dtype=float)
 
             logger.debug(f"Preprocessed features shape: {features.shape}")

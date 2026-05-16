@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { apiClient, setToken } from "../../utils/api";
+import { useRouter } from "next/navigation";
 
 // Custom SVG Icons
 const User = ({ className }) => (
@@ -186,6 +188,7 @@ const SuccessMessage = ({ onRedirect, redirectSeconds }) => (
 );
 
 export default function App() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -224,8 +227,7 @@ export default function App() {
     if (redirectTimerRef.current) {
       clearInterval(redirectTimerRef.current);
     }
-    // In a real app, you would use a router here
-    alert("Redirecting to login page...");
+    router.push("/login");
   };
 
   const handleChange = (e) => {
@@ -285,14 +287,45 @@ export default function App() {
     }
 
     setIsLoading(true);
+    setErrors({});
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      // Simulated successful sign-up
-      setIsSignedUp(true);
+      // Call actual API
+      const response = await apiClient.post('/auth/register', {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+        dob: formData.dob,
+      });
+
+      if (response.success && response.data.token) {
+        // Store authentication token
+        setToken(response.data.token);
+        // Show success message
+        setIsSignedUp(true);
+      } else {
+        setErrors({ general: response.message || "Registration failed. Please try again." });
+      }
     } catch (error) {
-      setErrors({ general: "Something went wrong. Please try again." });
+      console.error('Registration error:', error);
+      
+      // Handle specific error cases
+      if (error.status === 400) {
+        // Validation errors
+        if (error.data && error.data.errors) {
+          const fieldErrors = {};
+          error.data.errors.forEach(err => {
+            fieldErrors[err.field] = err.message;
+          });
+          setErrors(fieldErrors);
+        } else {
+          setErrors({ general: error.data?.message || error.message || "Invalid input. Please check your information." });
+        }
+      } else if (error.status === 409 || error.message.includes('already registered')) {
+        setErrors({ email: "This email is already registered. Please use a different email or sign in." });
+      } else {
+        setErrors({ general: error.message || "Something went wrong. Please try again." });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -358,7 +391,7 @@ export default function App() {
             </div>
           )}
 
-          <div className="space-y-4 sm:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <InputField
               label="Full Name"
               name="name"
@@ -444,22 +477,20 @@ export default function App() {
                 "Sign Up"
               )}
             </button>
-          </div>
 
-          {/* Sign In Link */}
-          <div className="mt-4 sm:mt-6 text-center">
-            <p className="text-sm sm:text-base text-gray-600">
-              Already have an account?{" "}
-              <button>
+            {/* Sign In Link */}
+            <div className="mt-4 sm:mt-6 text-center">
+              <p className="text-sm sm:text-base text-gray-600">
+                Already have an account?{" "}
                 <a
                   href="/login" 
-                className="text-rose-600 hover:text-rose-700 font-semibold transition-colors"
-              >
-                Sign In
+                  className="text-rose-600 hover:text-rose-700 font-semibold transition-colors"
+                >
+                  Sign In
                 </a>
-              </button>
-            </p>
-          </div>
+              </p>
+            </div>
+          </form>
         </div>
 
         {/* only for desiging purpose */}

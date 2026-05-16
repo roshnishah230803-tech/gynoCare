@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { removeToken } from "../../utils/api";
 
 // Custom SVG Icons
 const LogOut = ({ className }) => (
@@ -101,11 +102,17 @@ export default function LogoutPage() {
     setIsLoggingOut(true);
     
     try {
-      // Simulate logout API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Remove token from localStorage (logout is client-side)
+      // Note: Backend doesn't have a logout endpoint since JWT tokens are stateless
+      // If you want server-side logout, you'd need to implement a token blacklist
+      removeToken();
+      
       setIsLoggedOut(true);
     } catch (error) {
-      alert("Logout failed. Please try again.");
+      console.error('Logout error:', error);
+      // Even if there's an error, clear tokens
+      removeToken();
+      setIsLoggedOut(true);
     } finally {
       setIsLoggingOut(false);
     }

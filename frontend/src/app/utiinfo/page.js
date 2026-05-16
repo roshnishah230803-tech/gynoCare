@@ -101,9 +101,7 @@ export default function UTIDetailPage() {
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-12 px-4 sm:px-0">
             A urinary tract infection (UTI) is a common infection that affects your urinary system. Knowing the symptoms is key to getting quick treatment.
           </p>
-          <ActionButton href="/utiform">
-            Check Your Symptoms
-          </ActionButton>
+
         </section>
         
         {/* What is a UTI Section */}
@@ -207,6 +205,11 @@ export default function UTIDetailPage() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Don't wait for a UTI to get worse. Consult with a healthcare professional.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <ActionButton href="/" variant="secondary">
+              Start your journey
+            </ActionButton>
+          </div>
           </div>
         </section>
 

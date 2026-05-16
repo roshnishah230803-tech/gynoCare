@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Custom SVG Icons with enhanced styling
 const User = ({ className }) => (
@@ -873,6 +874,12 @@ const UTIForm = ({ onClose }) => {
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
+  const router = useRouter();
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    router.push("/");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -895,7 +902,7 @@ const App = () => {
           Start Assessment
         </button>
       </div>
-      {showForm && <UTIForm onClose={() => setShowForm(false)} />}
+      {showForm && <UTIForm onClose={handleCloseForm} />}
     </div>
   );
 };

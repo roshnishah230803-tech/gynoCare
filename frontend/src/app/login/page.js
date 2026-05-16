@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { apiClient, setToken } from "../../utils/api";
 
 // Custom SVG Icons
 const Mail = ({ className }) => (
@@ -149,12 +150,16 @@ export default function LoginPage() {
     setErrors({});
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Authentication logic - replace with actual API call
-      if (formData.email && formData.password) {
-        alert("Login Successful!");
+      // Call actual API
+      const response = await apiClient.post('/auth/login', {
+        email: formData.email.trim(),
+        password: formData.password,
+      });
+
+      if (response.success && response.data.token) {
+        // Store authentication token
+        setToken(response.data.token);
+        
         // Redirect to the return URL with fromLogin parameter if it's the PCOS page
         if (returnUrl === '/pcos') {
           router.push('/pcos?fromLogin=true');
@@ -162,10 +167,27 @@ export default function LoginPage() {
           router.push(returnUrl);
         }
       } else {
-        setErrors({ general: "Please check your credentials and try again" });
+        setErrors({ general: response.message || "Login failed. Please check your credentials." });
       }
     } catch (error) {
-      setErrors({ general: "Something went wrong. Please try again." });
+      console.error('Login error:', error);
+      
+      // Handle specific error cases
+      if (error.status === 401) {
+        setErrors({ general: "Invalid email or password. Please try again." });
+      } else if (error.status === 400) {
+        if (error.data && error.data.errors) {
+          const fieldErrors = {};
+          error.data.errors.forEach(err => {
+            fieldErrors[err.field] = err.message;
+          });
+          setErrors(fieldErrors);
+        } else {
+          setErrors({ general: error.data?.message || error.message || "Invalid input. Please check your information." });
+        }
+      } else {
+        setErrors({ general: error.message || "Something went wrong. Please try again." });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -220,7 +242,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <div className="space-y-4 sm:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <InputField
               label="Email Address"
               name="email"
@@ -271,7 +293,7 @@ export default function LoginPage() {
 
             {/* Submit Button */}
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={isLoading}
               className={`w-full py-3 sm:py-4 px-4 rounded-xl font-semibold text-white text-sm sm:text-base transition-all duration-300 transform ${
                 !isLoading
@@ -288,20 +310,20 @@ export default function LoginPage() {
                 "Sign In"
               )}
             </button>
-          </div>
 
-          {/* Sign Up Link */}
-          <div className="mt-4 sm:mt-6 text-center">
-            <p className="text-sm sm:text-base text-gray-600">
-              Don't have an account?{" "}
-              <a
-                href="/signup"
-                className="text-rose-600 hover:text-rose-700 font-semibold transition-colors"
-              >
-                Sign Up
-              </a>
-            </p>
-          </div>
+            {/* Sign Up Link */}
+            <div className="mt-4 sm:mt-6 text-center">
+              <p className="text-sm sm:text-base text-gray-600">
+                Don't have an account?{" "}
+                <a
+                  href="/signup"
+                  className="text-rose-600 hover:text-rose-700 font-semibold transition-colors"
+                >
+                  Sign Up
+                </a>
+              </p>
+            </div>
+          </form>
         </div>
 
         {/* Feature Highlights */}

@@ -210,13 +210,12 @@ export default function App() {
               Knowledge is the first step. Our platform is the next.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <ActionButton href="/home" variant="secondary">
-                Explore More
+              <ActionButton href="/" variant="secondary">
+                Start your journey
               </ActionButton>
             </div>
           </div>
         </section>
-
       </main>
     </div>
   );

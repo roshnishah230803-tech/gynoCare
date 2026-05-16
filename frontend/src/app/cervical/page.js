@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiClient } from "../../utils/api";
 
 // Custom SVG Icons with enhanced styling
 const User = ({ className }) => (
@@ -402,13 +404,71 @@ const CervicalCancerForm = ({ onClose }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      // Transform frontend form data to backend format
+      // Handle "Yes"/"No"/"Unknown" string values and convert to booleans
+      const backendData = {
+        age: parseInt(formData.age) || 0,
+        numSexualPartners: parseInt(formData.numPartners) || 0,
+        ageFirstIntercourse: parseInt(formData.firstIntercourseAge) || 0,
+        numPregnancies: parseInt(formData.numPregnancies) || 0,
+        smoking: formData.smoking === "Yes",
+        yearsSmoking: formData.smoking === "Yes" ? (parseInt(formData.yearsSmoking) || 0) : 0,
+        hormonalContraceptives: formData.contraceptives === "Yes",
+        yearsHormonalContraceptives: formData.contraceptives === "Yes" ? (parseInt(formData.yearsContraceptives) || 0) : 0,
+        iud: formData.iud === "Yes",
+        yearsIud: formData.iud === "Yes" ? (parseInt(formData.yearsIUD) || 0) : 0,
+        stds: formData.stds === "Yes",
+        numStds: formData.stds === "Yes" ? (parseInt(formData.numSTDs) || 0) : 0,
+        // Handle HPV: "Yes" = true, "No" or "Unknown" = false
+        stdHpv: formData.stdHPV === "Yes",
+        stdHiv: formData.stdHIV === "Yes",
+      };
 
-    const prediction = calculateRiskPrediction();
-    setRiskPrediction(prediction);
+      // Call backend API
+      const response = await apiClient.post('/cervical-cancer', backendData);
 
-    setIsSubmitting(false);
-    setShowConfirmation(true);
+      if (response.success && response.data) {
+        // Use ML prediction result if available, otherwise use local calculation
+        const prediction = response.data.result 
+          ? {
+              level: response.data.result.includes('Low') ? 'Low' : 
+                     response.data.result.includes('Moderate') ? 'Moderate' : 'Higher',
+              color: response.data.probability < 0.3 ? 'green' : 
+                     response.data.probability < 0.7 ? 'yellow' : 'red',
+              percentage: Math.round(response.data.probability * 100),
+              score: Math.round(response.data.probability * 20),
+              factors: response.data.explanation?.top_features?.map(f => f.feature) || [],
+              recommendations: [
+                "Continue routine cervical screening (Pap smears every 3 years)",
+                "Maintain healthy lifestyle habits",
+                "Practice safe sex",
+                "Consider HPV vaccination if age-appropriate"
+              ]
+            }
+          : calculateRiskPrediction();
+        
+        setRiskPrediction(prediction);
+        setShowConfirmation(true);
+      } else {
+        // Fallback to local calculation if API fails
+        const prediction = calculateRiskPrediction();
+        setRiskPrediction(prediction);
+        setShowConfirmation(true);
+      }
+    } catch (error) {
+      console.error('Cervical cancer prediction error:', error);
+      
+      // If API fails, use local calculation as fallback
+      const prediction = calculateRiskPrediction();
+      setRiskPrediction(prediction);
+      setShowConfirmation(true);
+      
+      // Optionally show a warning that prediction wasn't saved
+      // You could add a toast notification here
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Results modal
@@ -779,6 +839,12 @@ const CervicalCancerForm = ({ onClose }) => {
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
+  const router = useRouter();
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    router.push("/");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -801,7 +867,7 @@ const App = () => {
           Start Assessment
         </button>
       </div>
-      {showForm && <CervicalCancerForm onClose={() => setShowForm(false)} />}
+      {showForm && <CervicalCancerForm onClose={handleCloseForm} />}
     </div>
   );
 };

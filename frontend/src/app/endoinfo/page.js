@@ -102,9 +102,6 @@ export default function EndometriosisDetailPage() {
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-12 px-4 sm:px-0">
             A complex chronic disease where tissue similar to the lining of the uterus grows outside of it. Understanding it is the first step toward effective management.
           </p>
-          <ActionButton href="/consultation">
-            Book a Specialist Consultation
-          </ActionButton>
         </section>
         
         {/* What is Endometriosis Section */}
@@ -262,6 +259,22 @@ export default function EndometriosisDetailPage() {
             </div>
           </div>
         </section>
+        <section className="py-12 sm:py-16">
+  <div className="bg-gradient-to-br from-white/80 to-pink-50/50 backdrop-blur-sm rounded-3xl p-12 text-center shadow-xl border border-pink-100">
+    <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+      Understand & Manage Endometriosis
+    </h2>
+    <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+      Endometriosis affects millions of women worldwide — but awareness and early diagnosis can make a difference. 
+      Learn about symptoms, diagnosis, and treatment options to take control of your well-being.
+    </p>
+    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <ActionButton href="/" variant="secondary">
+        Start your journey
+      </ActionButton>
+    </div>
+  </div>
+</section>
 
       </main>
     </div>

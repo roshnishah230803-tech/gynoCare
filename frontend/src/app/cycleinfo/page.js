@@ -89,9 +89,7 @@ export default function PeriodTrackerDetails() {
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-12 px-4 sm:px-0">
             A period tracker is more than just a calendar. It’s a powerful tool for understanding your body, managing your health, and feeling empowered.
           </p>
-          <ActionButton href="/signup">
-            Start Your Journey
-          </ActionButton>
+        
         </section>
         
         {/* What is a Period Tracker? Section */}
@@ -211,8 +209,8 @@ export default function PeriodTrackerDetails() {
               Knowledge is the first step. Our platform is the next.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <ActionButton href="/home" variant="secondary">
-                Explore More
+              <ActionButton href="/" variant="secondary">
+                Start your journey
               </ActionButton>
             </div>
           </div>

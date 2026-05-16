@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Image from "next/image";
-import React from "react";
 
 // Health topics data - moved to separate constant for better maintainability
 const HEALTH_TOPICS = [
@@ -9,7 +8,7 @@ const HEALTH_TOPICS = [
     id: "tracker",
     title: "Menstrual Cycle Tracker",
     description: "A period tracker is a tool used by women to monitor menstrual cycles. It helps track cycle length, fertile days, ovulation, and symptoms like mood or cramps. Period tracking is useful for predicting upcoming periods, managing health, and planning pregnancy or birth control.",
-    image: "/images/image1.png",
+    image: "/images/gynocare_image_coffee.png",
     color: "from-pink-100 to-rose-100"
   },
   {
@@ -30,14 +29,14 @@ const HEALTH_TOPICS = [
     id: "uti",
     title: "UTI Detection",
     description: "A UTI is an infection in any part of the urinary system, usually caused by bacteria. It commonly affects the bladder and urethra, leading to symptoms like burning while urinating, frequent urge to urinate, cloudy or strong-smelling urine, and lower abdominal pain.",
-    image: "/images/image2.png",
+    image: "/images/gynocare_image_laptop.png",
     color: "from-pink-100 to-rose-100"
   },
   {
     id: "endometriosis ",
     title: "Endometriosis Detection",
     description: "Endometriosis is a condition where tissue similar to the lining of the uterus grows outside it, often on ovaries, fallopian tubes, or pelvic lining. This can cause painful periods, pelvic pain, heavy bleeding, and sometimes infertility.",
-    image: "/images/image1.png",
+    image: "/images/gynocare_image_writing.png",
     color: "from-pink-100 to-rose-100"
   }
 ];
@@ -112,10 +111,10 @@ const HealthTopicCard = ({ topic, index }: HealthTopicCardProps) => {
               {topic.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4 justify-center lg:justify-start">
-              <ActionButton href={topic.id === "pcos" ? "/login?returnUrl=/pcos" : "/login"}>
+              <ActionButton href={topic.id === "tracker" ? "/login?returnUrl=/cyclecheck" : topic.id === "pcos" ? "/login?returnUrl=/pcos" : topic.id === "cervical" ? "/login?returnUrl=/cervical" : topic.id === "uti" ? "/login?returnUrl=/utiform" : topic.id === "endometriosis " ? "/login?returnUrl=/endo" : "/signup"}>
                 Get Started
               </ActionButton>
-              <ActionButton href="/awareness" variant="secondary">
+              <ActionButton href={topic.id === "tracker" ? "/cycleinfo" : topic.id === "pcos" ? "/pcosinfo" : topic.id === "cervical" ? "/cervicalinfo" : topic.id === "uti" ? "/utiinfo" : topic.id === "endometriosis " ? "/endoinfo" : "/awareness"} variant="secondary">
                 Learn More
               </ActionButton>
             </div>
@@ -165,7 +164,7 @@ export default function Home() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
     { href: "/awareness", label: "Awareness" },
-    { href: "/login", label: "Sign In" },
+    { href: "/signup", label: "Sign Up" },
   ];
 
   return (
@@ -200,9 +199,6 @@ export default function Home() {
                   {item.label}
                 </a>
               ))}
-              <ActionButton href="/logout" variant="secondary">
-                Logout
-              </ActionButton>
             </div>
 
             {/* Mobile Menu Button */}
@@ -232,11 +228,6 @@ export default function Home() {
                   {item.label}
                 </a>
               ))}
-              <div className="px-4 pt-2">
-                <ActionButton href="/logout" variant="secondary">
-                  Logout
-                </ActionButton>
-              </div>
             </div>
           )}
         </div>
