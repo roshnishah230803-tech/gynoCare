@@ -107,7 +107,7 @@ export default function App() {
             PCOS is a common hormonal disorder among women of reproductive age. It is often characterized by a combination of irregular or absent menstrual periods, high levels of male hormones (androgens), and the presence of small cysts on the ovaries. The exact cause is unknown, but it is believed to be a combination of genetic and environmental factors.
           </p>
           <p>
-            While the name "polycystic ovaries" suggests cysts are the primary issue, the core problem is an imbalance of hormones that can disrupt the menstrual cycle and lead to a range of symptoms. Early diagnosis and management are crucial for preventing long-term complications.
+            While the name &quot;polycystic ovaries&quot; suggests cysts are the primary issue, the core problem is an imbalance of hormones that can disrupt the menstrual cycle and lead to a range of symptoms. Early diagnosis and management are crucial for preventing long-term complications.
           </p>
         </InfoSection>
 
@@ -137,10 +137,10 @@ export default function App() {
           </p>
           <ul className="list-disc list-inside space-y-2">
             <li>
-              <strong>Insulin Resistance:</strong> The body's cells don't respond well to insulin, leading to elevated insulin levels. This can increase androgen production, affecting ovulation.
+              <strong>Insulin Resistance:</strong> The body&apos;s cells don&apos;t respond well to insulin, leading to elevated insulin levels. This can increase androgen production, affecting ovulation.
             </li>
             <li>
-              <strong>Genetics:</strong> A family history of PCOS or Type 2 diabetes may increase a person's risk.
+              <strong>Genetics:</strong> A family history of PCOS or Type 2 diabetes may increase a person&apos;s risk.
             </li>
             <li>
               <strong>Inflammation:</strong> Women with PCOS often have low-grade chronic inflammation, which can trigger ovaries to produce androgens.
@@ -161,7 +161,7 @@ export default function App() {
         {/* Management & Lifestyle Section */}
         <InfoSection title="Management & Lifestyle">
           <p>
-            While there is no "cure" for PCOS, it can be effectively managed through a combination of lifestyle changes and medical treatment. The goal is to manage symptoms and reduce the risk of long-term health problems like Type 2 diabetes and heart disease.
+            While there is no &quot;cure&quot; for PCOS, it can be effectively managed through a combination of lifestyle changes and medical treatment. The goal is to manage symptoms and reduce the risk of long-term health problems like Type 2 diabetes and heart disease.
           </p>
           <h3 className="text-xl font-bold text-gray-800 mt-4 mb-2">Key Management Strategies:</h3>
           <ul className="list-disc list-inside space-y-2">

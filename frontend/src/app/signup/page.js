@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { apiClient, setToken } from "../../utils/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // Custom SVG Icons
 const User = ({ className }) => (
@@ -171,7 +172,7 @@ const SuccessMessage = ({ onRedirect, redirectSeconds }) => (
           
           <div className="bg-green-50 border border-green-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
             <p className="text-xs sm:text-sm text-green-700">
-              🎉 You're all set! Redirecting you to the sign-in page in <span className="font-semibold">{redirectSeconds}</span> seconds...
+              🎉 You&apos;re all set! Redirecting you to the sign-in page in <span className="font-semibold">{redirectSeconds}</span> seconds...
             </p>
           </div>
           
@@ -221,14 +222,14 @@ export default function App() {
         clearInterval(redirectTimerRef.current);
       }
     };
-  }, [isSignedUp]);
+  }, [isSignedUp, handleRedirect]);
 
-  const handleRedirect = () => {
+  const handleRedirect = useCallback(() => {
     if (redirectTimerRef.current) {
       clearInterval(redirectTimerRef.current);
     }
     router.push("/login");
-  };
+  }, [router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -331,13 +332,6 @@ export default function App() {
     }
   };
 
-  // Test function to trigger validation - for debugging
-  const testValidation = () => {
-    const formErrors = validateForm();
-    setErrors(formErrors);
-    console.log("Validation errors:", formErrors);
-  };
-
   if (isSignedUp) {
     return <SuccessMessage onRedirect={handleRedirect} redirectSeconds={redirectSeconds} />;
   }
@@ -353,12 +347,12 @@ export default function App() {
       <div className="relative w-full max-w-sm sm:max-w-md">
         {/* Back to Home Link */}
         <div className="mb-4 sm:mb-6 text-center">
-          <a 
+          <Link 
             href="/" 
             className="inline-flex items-center text-rose-600 hover:text-rose-700 transition-colors text-sm font-medium"
           >
             ← Back to Home
-          </a>
+          </Link>
         </div>
 
         {/* Logo and Brand */}
@@ -482,12 +476,12 @@ export default function App() {
             <div className="mt-4 sm:mt-6 text-center">
               <p className="text-sm sm:text-base text-gray-600">
                 Already have an account?{" "}
-                <a
+                <Link
                   href="/login" 
                   className="text-rose-600 hover:text-rose-700 font-semibold transition-colors"
                 >
                   Sign In
-                </a>
+                </Link>
               </p>
             </div>
           </form>

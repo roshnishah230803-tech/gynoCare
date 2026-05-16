@@ -162,7 +162,7 @@ export default function UTIDetailPage() {
               **Stay Hydrated:** Drinking plenty of water helps flush bacteria from your urinary system.
             </li>
             <li>
-              **Urinate Frequently:** Don't hold your urine for long periods. Urinating after sex is also recommended.
+              **Urinate Frequently:** Don&apos;t hold your urine for long periods. Urinating after sex is also recommended.
             </li>
             <li>
               **Proper Hygiene:** Always wipe from front to back after using the toilet.
@@ -180,11 +180,11 @@ export default function UTIDetailPage() {
               When Should You See a Doctor?
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              If you suspect you have a UTI, it's important to seek medical advice.
+              If you suspect you have a UTI, it&apos;s important to seek medical advice.
             </p>
             <ul className="text-lg text-gray-700 list-disc list-inside space-y-2 text-left max-w-xl mx-auto">
               <li>
-                **Symptoms Persist:** If symptoms don't improve with at-home care or worsen.
+                **Symptoms Persist:** If symptoms don&apos;t improve with at-home care or worsen.
               </li>
               <li>
                 **Severe Symptoms:** If you experience back pain, fever, chills, or nausea, as these could indicate a more serious kidney infection.
@@ -203,7 +203,7 @@ export default function UTIDetailPage() {
               Get the Care You Need
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Don't wait for a UTI to get worse. Consult with a healthcare professional.
+              Don&apos;t wait for a UTI to get worse. Consult with a healthcare professional.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <ActionButton href="/" variant="secondary">
