@@ -189,7 +189,7 @@ function SuccessMessage({ onRedirect, redirectSeconds }) {
   );
 }
 
-export default function App() {
+export default function SignupPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -464,10 +464,10 @@ export default function App() {
               }`}
             >
               {isLoading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
+                <span className="flex items-center justify-center space-x-2">
+                  <span className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></span>
                   <span>Signing Up...</span>
-                </div>
+                </span>
               ) : (
                 "Sign Up"
               )}
